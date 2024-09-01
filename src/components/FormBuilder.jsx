@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Button, Form, Container, Row, Col, Card } from 'react-bootstrap';
 import FormElement from './FormElement';
 import SettingsPanel from './SettingsPanel';
+import Image from '../assets/logo.png'
 
 const FormBuilder = () => {
   const [elements, setElements] = useState([]);
