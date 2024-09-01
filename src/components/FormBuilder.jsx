@@ -92,7 +92,7 @@ const FormBuilder = () => {
       </div>
 
       <div className="top-header">
-        <img src="src/assets/logo.png" alt="Logo" />
+        <img src={Image} alt="Logo" />
         <div className="btn-group">
           <button className="btn text-light">
             <i className="fas fa-globe"></i>
