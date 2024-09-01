@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dynamic Form</title>
+  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+  <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+  <style>
+    .form-group {
+      position: relative;
+      margin-bottom: 2rem;
+      padding: 1rem;
+      border: 1px solid transparent;
+      border-radius: 5px;
+      cursor: move;
+    }
+    .form-group.active {
+      border-color: blue;
+    }
+    .action-buttons {
+      position: absolute;
+      top: 50%;
+      right: -2rem;
+      transform: translateY(-50%);
+      display: none;
+    }
+    .action-buttons .btn {
+      margin-bottom: 0.5rem;
+      padding: 0.4rem;
+      display: block;
+      border-radius: 50%;
+    }
+    .form-group.active .action-buttons {
+      display: block;
+    }
+    #settings-panel {
+      position: fixed;
+      top: 0;
+      right: 0;
+      width: 300px;
+      height: 100%;
+      background: #f8f9fa;
+      border-left: 1px solid #ddd;
+      padding: 1rem;
+      display: none;
+    }
+    #settings-panel.active {
+      display: block;
+    }
+    .drag-over {
+      border: 2px dashed #007bff;
+    }
+  </style>
+</head>
+<body>
+  <div class="container mt-5">
+    <form id="dynamic-form">
+      <div class="form-group" draggable="true" data-type="name">
+        <label>Name</label>
+        <div class="form-row">
+          <div class="col">
+            <input type="text" class="form-control" placeholder="First Name">
+          </div>
+          <div class="col">
+            <input type="text" class="form-control" placeholder="Last Name">
+          </div>
+        </div>
+        <div class="action-buttons">
+          <button type="button" class="btn btn-sm btn-light border settings-btn text-light">⚙</button>
+          <button type="button" class="btn btn-sm btn-dark delete-btn">🗑</button>
+        </div>
+      </div>
+      <div class="form-group" draggable="true" data-type="email">
+        <label>Email</label>
+        <input type="email" class="form-control" placeholder="example@example.com">
+        <div class="action-buttons">
+          <button type="button" class="btn btn-sm btn-light border settings-btn text-light">⚙</button>
+          <button type="button" class="btn btn-sm btn-dark delete-btn">🗑</button>
+        </div>
+      </div>
+      <div class="form-group" draggable="true" data-type="phone">
+        <label>Phone Number</label>
+        <input type="tel" class="form-control" placeholder="123-456-7890">
+        <div class="action-buttons">
+          <button type="button" class="btn btn-sm btn-light border settings-btn text-light">⚙</button>
+          <button type="button" class="btn btn-sm btn-dark delete-btn">🗑</button>
+        </div>
+      </div>
+      <div class="form-group" draggable="true" data-type="dob">
+        <label>Date of Birth</label>
+        <input type="date" class="form-control">
+        <div class="action-buttons">
+          <button type="button" class="btn btn-sm btn-light border settings-btn text-light">⚙</button>
+          <button type="button" class="btn btn-sm btn-dark delete-btn">🗑</button>
+        </div>
+      </div>
+      <div class="form-group" draggable="true" data-type="gender">
+        <label>Gender</label>
+        <div>
+          <div class="form-check form-check-inline">
+            <input class="form-check-input" type="radio" name="gender" value="male">
+            <label class="form-check-label">Male</label>
+          </div>
+          <div class="form-check form-check-inline">
+            <input class="form-check-input" type="radio" name="gender" value="female">
+            <label class="form-check-label">Female</label>
+          </div>
+          <div class="form-check form-check-inline">
+            <input class="form-check-input" type="radio" name="gender" value="other">
+            <label class="form-check-label">Other</label>
+          </div>
+        </div>
+        <div class="action-buttons">
+          <button type="button" class="btn btn-sm btn-light border settings-btn text-light">⚙</button>
+          <button type="button" class="btn btn-sm btn-dark delete-btn">🗑</button>
+        </div>
+      </div>
+      <div class="form-group" draggable="true" data-type="newsletter">
+        <div class="form-check">
+          <input class="form-check-input" type="checkbox" id="newsletter">
+          <label class="form-check-label" for="newsletter">
+            Subscribe to newsletter
+          </label>
+        </div>
+        <div class="action-buttons">
+          <button type="button" class="btn btn-sm btn-light border settings-btn text-light">⚙</button>
+          <button type="button" class="btn btn-sm btn-dark delete-btn">🗑</button>
+        </div>
+      </div>
+    </form>
+  </div>
+
+  <div id="settings-panel">
+    <h4>Element Settings</h4>
+    <form id="settings-form">
+      <div class="">
+        <label for="field-label">Field Label</label>
+        <input type="text" id="field-label" class="form-control">
+      </div>
+      <div class="" id="placeholder-group">
+        <label for="placeholder-text">Placeholder Text</label>
+        <input type="text" id="placeholder-text" class="form-control">
+      </div>
+      <div class="">
+        <label for="required-toggle">Required</label>
+        <input type="checkbox" id="required-toggle">
+      </div>
+      <button type="button" id="close-settings" class="btn btn-primary">Close</button>
+    </form>
+  </div>
+
+  <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  
+  <script>
+   document.querySelectorAll('.form-group').forEach(group => {
+    group.addEventListener('click', () => {
+        document.querySelectorAll('.form-group').forEach(g => {
+            g.classList.remove('active');
+            g.querySelector('.action-buttons').style.display = 'none';
+        });
+        group.classList.add('active');
+        group.querySelector('.action-buttons').style.display = 'block';
+    });
+
+    group.querySelector('.delete-btn').addEventListener('click', (e) => {
+        e.stopPropagation();
+        group.remove();
+    });
+
+    group.querySelector('.settings-btn').addEventListener('click', (e) => {
+        e.stopPropagation();
+        currentElement = group;
+        const label = group.querySelector('label').innerText;
+        let placeholder = '';
+        let isRequired = false;
+
+        if (group.dataset.type === 'name') {
+            placeholder = {
+                first: group.querySelectorAll('input')[0].placeholder,
+                last: group.querySelectorAll('input')[1].placeholder
+            };
+            isRequired = group.querySelectorAll('input')[0].required;
+            document.getElementById('placeholder-group').style.display = 'block';
+            document.getElementById('placeholder-group').innerHTML = `
+                <label for="first-placeholder">First Name Placeholder</label>
+                <input type="text" id="first-placeholder" class="form-control">
+                <label for="last-placeholder">Last Name Placeholder</label>
+                <input type="text" id="last-placeholder" class="form-control">
+            `;
+            document.getElementById('first-placeholder').value = placeholder.first;
+            document.getElementById('last-placeholder').value = placeholder.last;
+        } else if (group.querySelector('input')) {
+            placeholder = group.querySelector('input').placeholder;
+            isRequired = group.querySelector('input').required;
+            document.getElementById('placeholder-group').style.display = 'block';
+            document.getElementById('placeholder-group').innerHTML = `
+                <label for="placeholder-text">Placeholder Text</label>
+                <input type="text" id="placeholder-text" class="form-control">
+            `;
+            document.getElementById('placeholder-text').value = placeholder;
+        } else {
+            document.getElementById('placeholder-group').style.display = 'none';
+        }
+
+        document.getElementById('field-label').value = label;
+        document.getElementById('required-toggle').checked = isRequired;
+
+        document.getElementById('settings-panel').classList.add('active');
+    });
+
+    group.addEventListener('dragstart', (e) => {
+        e.dataTransfer.setData('text/plain', null); // Required for Firefox
+        group.classList.add('dragging');
+    });
+
+    group.addEventListener('dragend', () => {
+        group.classList.remove('dragging');
+        document.querySelectorAll('.drag-over').forEach(el => el.classList.remove('drag-over'));
+    });
+
+    group.addEventListener('dragover', (e) => {
+        e.preventDefault();
+        group.classList.add('drag-over');
+    });
+
+    group.addEventListener('dragleave', () => {
+        group.classList.remove('drag-over');
+    });
+
+    group.addEventListener('drop', (e) => {
+        e.preventDefault();
+        const dragging = document.querySelector('.dragging');
+        const dropTarget = e.target.closest('.form-group');
+
+        if (dragging !== dropTarget) {
+            const allGroups = Array.from(document.querySelectorAll('.form-group'));
+            const dragIndex = allGroups.indexOf(dragging);
+            const dropIndex = allGroups.indexOf(dropTarget);
+
+            if (dragIndex > dropIndex) {
+                dropTarget.before(dragging);
+            } else {
+                dropTarget.after(dragging);
+            }
+        }
+    });
+});
+
+document.getElementById('close-settings').addEventListener('click', () => {
+    document.getElementById('settings-panel').classList.remove('active');
+});
+
+document.getElementById('field-label').addEventListener('input', (e) => {
+    if (currentElement) {
+        currentElement.querySelector('label').innerText = e.target.value;
+    }
+});
+
+document.getElementById('settings-panel').addEventListener('input', (e) => {
+    if (!currentElement) return;
+    
+    if (e.target.id === 'first-placeholder' || e.target.id === 'last-placeholder') {
+        const inputs = currentElement.querySelectorAll('input');
+        if (e.target.id === 'first-placeholder') {
+            inputs[0].placeholder = e.target.value;
+        } else if (e.target.id === 'last-placeholder') {
+            inputs[1].placeholder = e.target.value;
+        }
+    } else if (e.target.id === 'placeholder-text') {
+        currentElement.querySelector('input').placeholder = e.target.value;
+    }
+});
+
+document.getElementById('required-toggle').addEventListener('change', (e) => {
+    if (currentElement && currentElement.querySelector('input')) {
+        if (currentElement.dataset.type === 'name') {
+            currentElement.querySelectorAll('input').forEach(input => {
+                input.required = e.target.checked;
+            });
+        } else {
+            currentElement.querySelector('input').required = e.target.checked;
+        }
+    }
+});
+
+document.querySelectorAll('[data-alignment]').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+        if (currentElement) {
+            const alignment = e.target.getAttribute('data-alignment');
+            currentElement.querySelector('label').style.textAlign = alignment;
+        }
+    });
+});
+
+document.getElementById('required-toggle').addEventListener('change', (e) => {
+    if (currentElement && currentElement.querySelector('input')) {
+        if (currentElement.dataset.type === 'name') {
+            currentElement.querySelectorAll('input').forEach(input => {
+                input.required = e.target.checked;
+            });
+        } else {
+            currentElement.querySelector('input').required = e.target.checked;
+        }
+        updateRequiredIndicator(currentElement);
+    }
+});
+
+document.getElementById('field-label').addEventListener('input', (e) => {
+    if (currentElement) {
+        currentElement.querySelector('label').innerText = e.target.value;
+        updateRequiredIndicator(currentElement);
+    }
+});
+
+function updateRequiredIndicator(group) {
+    const label = group.querySelector('label');
+    if (group.querySelector('input').required) {
+        if (!label.innerHTML.includes('<span class="required-asterisk">*</span>')) {
+            label.innerHTML += ' <span class="required-asterisk" style="color: red;">*</span>';
+        }
+    } else {
+        const asterisk = label.querySelector('.required-asterisk');
+        if (asterisk) {
+            asterisk.remove();
+        }
+    }
+}
+
+  </script>
+</body>
+</html>
